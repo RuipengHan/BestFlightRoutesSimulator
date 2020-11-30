@@ -26,9 +26,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7d66cc30-72c4-40d7-b3bc-3ba5075cf1fb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/graph.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/graph.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/edge.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +67,7 @@
       <option name="presentableId" value="Default" />
       <updated>1606175780242</updated>
       <workItem from="1606175781269" duration="930000" />
-      <workItem from="1606704850300" duration="222000" />
+      <workItem from="1606704850300" duration="2385000" />
     </task>
     <servers />
   </component>
