@@ -6,14 +6,17 @@
 #include "graph.h"
 #include "Vertex.h"
 using namespace std;
-
-bool processAirlineData(string& filename) {
+/*
+ * This process route and airline.
+ */
+bool initializeEdge(string& filename) {
 
     ifstream airline(filename);
     string each_row;
     if (airline.is_open()) {
         while (getline(airline, each_row)) {
-            // Process this row;
+            // Initialize the airlines;
+            // Then add to graph;
         }
         return true;
     }
@@ -28,6 +31,7 @@ bool processAirportData(string& filename) {
         while (getline(airline, each_row)) {
             // Process this row;
             Vertice new_vertex(each_row);
+            // Add the new vertex to graph;
             new_vertex.print();
             count++;
         }
@@ -57,14 +61,14 @@ int main() {
     string airline_file = "data_set/airlines.dat.txt";
     string route_file = "data_set/routes.dat.txt";
 
-    if (!processAirlineData(airline_file))
+    if (!initializeEdge(airline_file))
         std::cout<< "Invalid airline_file." << std::endl;
 
     if (!processAirportData(airport_file))
         std::cout<< "Oops cannot read airport file." << std::endl;
 
     if (!processRouteData(route_file))
-        std::cout<< "You're fucked." << std::endl;
+        std::cout<< "Oops cannot read route file." << std::endl;
 
 
     return 0;
