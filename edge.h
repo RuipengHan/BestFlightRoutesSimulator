@@ -12,6 +12,7 @@ using std::string;
 
 typedef string Vertex;
 
+
 /**
  * Represents an edge in a graph; used by the Graph class.
  *
@@ -105,6 +106,6 @@ class Edge
     }
 private:
     string label; /**< The edge label **/
-    int weight; /**< The edge weight (if in a weighed graph) **/
+    int weight; /**< The edge weight (if in a weighed graph) In this case, it is the distance between 2 airports**/
 
 };
