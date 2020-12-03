@@ -19,7 +19,6 @@
 #include <vector>
 
 #include "edge.h"
-#include "random.h"
 
 using std::cerr;
 using std::cout;
@@ -38,8 +37,7 @@ using std::unordered_map;
  * Represents a graph; used by the GraphTools class.
  *
  */
-class Graph
-{
+class Graph {
 public:
     /**
      * Constructor to create an empty graph.
@@ -57,13 +55,12 @@ public:
     Graph(bool weighted, bool directed);
 
     /**
-     * Constructor to create a random, connected graph.
+     * Constructor to create graph according to the data.
      * @param weighted - specifies whether the graph is a weighted graph or
      *  not
      * @param numVertices - the number of vertices the graph will have
-     * @param seed - a random seed to create the graph with
      */
-    Graph(bool weighted, int numVertices, unsigned long seed);
+    Graph(bool weighted, int numVertices);
 
     /**
      * Gets all adjacent vertices to the parameter vertex.
@@ -223,7 +220,6 @@ private:
 
     bool weighted;
     bool directed;
-    Random random;
     int picNum;
     string picName;
 
