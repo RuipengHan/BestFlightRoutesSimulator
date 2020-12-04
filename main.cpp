@@ -48,9 +48,7 @@ bool connectVertice(string& filename, Graph& graph, map<string, Vertex>& airport
                 graph.insertEdge(start, end);
             }
         }
-         cout<< "Number of unknown airport trying to add edge is: " << counter << endl;
-        for (string each: list_of_unknown_airport_in_route)
-            cout<< "Number of unknown airport trying to add edge is: " << each << endl;
+        cout<< "Number of unknown airport trying to add edge is: " << counter << endl;
         return true;
     }
     return false;
