@@ -4,7 +4,7 @@
 
 #include "graph.h"
 
-const Vertex Graph::InvalidVertex = "_CS225INVALIDVERTEX";
+const Vertex Graph::InvalidVertex(true);
 const int Graph::InvalidWeight = INT_MIN;
 const string Graph:: InvalidLabel = "_CS225INVALIDLABEL";
 const Edge Graph::InvalidEdge = Edge(Graph::InvalidVertex, Graph::InvalidVertex, Graph::InvalidWeight, Graph::InvalidLabel);
@@ -259,7 +259,7 @@ bool Graph::assertEdgeExists(Vertex source, Vertex destination, string functionN
     if(adjacency_list[source].find(destination)== adjacency_list[source].end())
     {
         if (functionName != "")
-            error(functionName + " called on nonexistent edge " + source + " -> " + destination);
+            error(functionName + " called on nonexistent edge " + source.name_ + " -> " + destination.name_);
         return false;
     }
 
@@ -270,7 +270,7 @@ bool Graph::assertEdgeExists(Vertex source, Vertex destination, string functionN
         if(adjacency_list[destination].find(source)== adjacency_list[destination].end())
         {
             if (functionName != "")
-                error(functionName + " called on nonexistent edge " + destination + " -> " + source);
+                error(functionName + " called on nonexistent edge " + destination.name_ + " -> " + source.name_);
             return false;
         }
     }
@@ -328,11 +328,11 @@ void Graph::print() const
 {
     for (auto it = adjacency_list.begin(); it != adjacency_list.end(); ++it)
     {
-        cout << it->first << endl;
+        cout << it->first.name_ << endl;
         for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2)
         {
             std::stringstream ss;
-            ss << it2->first;
+            ss << it2->first.name_;
             string vertexColumn = "    => " + ss.str();
             vertexColumn += " " ;
             cout << std::left << std::setw(26) << vertexColumn;
@@ -370,19 +370,19 @@ void Graph::savePNG(string title) const
     vector<Vertex> allv = getVertices();
     //lambda expression
     sort(allv.begin(), allv.end(), [](const Vertex& lhs, const Vertex& rhs) {
-        return stoi(lhs.substr(3)) > stoi(rhs.substr(3));
+        return stoi(lhs.name_.substr(3)) > stoi(rhs.name_.substr(3));
     });
 
     int xpos1 = 100;
     int xpos2 = 100;
     int xpos, ypos;
     for (auto it : allv) {
-        string current = it;
+        Vertex current = it;
         neatoFile
                 << "\t\""
-                << current
+                << current.name_
                 << "\"";
-        if (current[1] == '1') {
+        if (current.name_[1] == '1') {
             ypos = 100;
             xpos = xpos1;
             xpos1 += 100;
@@ -402,8 +402,8 @@ void Graph::savePNG(string title) const
     {
         for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2)
         {
-            string vertex1Text = it->first;
-            string vertex2Text = it2->first;
+            string vertex1Text = it->first.name_;
+            string vertex2Text = it2->first.name_;
 
             neatoFile << "\t\"" ;
             neatoFile << vertex1Text;

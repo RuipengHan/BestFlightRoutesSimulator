@@ -7,7 +7,8 @@
 #include "Vertex.h"
 using namespace std;
 /*
- * This process route and airline.
+ * This process route data by going through all possible departure/dest airport.
+ * The edge is initially empty of airlines. This function is just responsible for connecting a basic line between nodes.
  */
 bool initializeEdge(string& filename) {
 
@@ -15,8 +16,8 @@ bool initializeEdge(string& filename) {
     string each_row;
     if (airline.is_open()) {
         while (getline(airline, each_row)) {
-            // Initialize the airlines;
-            // Then add to graph;
+            // Add to graph;
+
         }
         return true;
     }
@@ -30,7 +31,7 @@ bool processAirportData(string& filename) {
     if (airline.is_open()) {
         while (getline(airline, each_row)) {
             // Process this row;
-            Vertice new_vertex(each_row);
+            Vertex new_vertex(each_row);
             // Add the new vertex to graph;
             new_vertex.print();
             count++;

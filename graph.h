@@ -17,9 +17,10 @@
 #include <set>
 #include <sstream>
 #include <vector>
+#include <map>
 
 #include "edge.h"
-
+#include "Vertex.h"
 using std::cerr;
 using std::cout;
 using std::endl;
@@ -31,6 +32,31 @@ using std::vector;
 using std::pair;
 using std::make_pair;
 using std::unordered_map;
+
+/**
+ * DON'T DELETE THIS
+ * This resolves the problem of user-defined class as key in un-ordered map.
+ */
+namespace std {
+    template <>
+    struct hash<Vertex>
+    {
+        std::size_t operator()(const Vertex& k) const
+        {
+            using std::size_t;
+            using std::hash;
+            using std::string;
+
+            // Compute individual hash values for first,
+            // second and third and combine them using XOR
+            // and bit shifting:
+
+            return ((hash<string>()(k.airport_id_)
+                     ^ (hash<string>()(k.name_) << 1)) >> 1)
+                   ^ (hash<string>()(k.city_) << 1);
+        }
+    };
+}
 
 
 /**
