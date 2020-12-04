@@ -5,7 +5,12 @@
 #include "Vertex.h"
 #include <vector>
 #include <sstream>
-Vertice::Vertice(string info) {
+
+Vertex::Vertex(bool invalid) {
+    invalid_vertex_ = true;
+}
+
+Vertex::Vertex(string info) {
     vector<string> result;
     stringstream s_stream(info); //create string stream from the string
 
@@ -35,7 +40,11 @@ Vertice::Vertice(string info) {
 }
 
 // 还原row
-void Vertice::print() {
-    std::cout << "airport id: " << airport_id_ << " name: " << name_ << " city: " << city_ << " country: " << country_
-         << " latitude: " << latitude_ << " longitude: " << longitude_ << " altitude: " << altitude_ << std:: endl;
+void Vertex::print() {
+    if (!invalid_vertex_)
+        std::cout << "airport id: " << airport_id_ << " name: " << name_ << " city: " << city_ << " country: " << country_
+             << " latitude: " << latitude_ << " longitude: " << longitude_ << " altitude: " << altitude_ << std:: endl;
+    else
+        std::cout<< "Invalid vertex." << std::endl;
+
 }

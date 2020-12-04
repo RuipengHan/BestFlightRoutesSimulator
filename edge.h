@@ -11,7 +11,7 @@
 #include <map>
 using std::string;
 
-typedef string Vertex;
+//typedef string Vertex;
 
 
 /**
@@ -24,7 +24,7 @@ class Edge {
     struct Airline {
         string name_;
         string id_;
-        stirng country_;
+        string country_;
 
         Airline(string info) {
             // Parse
