@@ -10,13 +10,12 @@ using namespace std;
  * This process route data by going through all possible departure/dest airport.
  * The edge is initially empty of airlines. This function is just responsible for connecting a basic line between nodes.
  */
-bool initializeEdge(string& filename) {
+bool connectVertice(string& filename, Graph& graph) {
 
-    ifstream airline(filename);
+    ifstream route(filename);
     string each_row;
-    if (airline.is_open()) {
-        while (getline(airline, each_row)) {
-            // Add to graph;
+    if (route.is_open()) {
+        while (getline(route, each_row)) {
 
         }
         return true;
@@ -24,7 +23,7 @@ bool initializeEdge(string& filename) {
     return false;
 }
 
-bool processAirportData(string& filename) {
+bool addAirportVertices(string& filename, Graph& graph) {
     ifstream airline(filename);
     string each_row;
     int count = 0;
@@ -33,17 +32,19 @@ bool processAirportData(string& filename) {
             // Process this row;
             Vertex new_vertex(each_row);
             // Add the new vertex to graph;
-            new_vertex.print();
+            if (!graph.vertexExists(new_vertex))
+                graph.insertVertex(new_vertex);
+            //new_vertex.print();
             count++;
         }
-        std::cout<< count << std::endl;
+        std::cout<< "AFTER READ, WE HAVE NUM OF AIRPORTS: " << count << std::endl;
         return true;
     }
 
     return false;
 }
 
-bool processRouteData(string& filename) {
+bool initializeEdge(string& filename) {
     ifstream airline(filename);
     string each_row;
     if (airline.is_open()) {
@@ -61,16 +62,20 @@ int main() {
     string airport_file = "data_set/airports.dat.txt";
     string airline_file = "data_set/airlines.dat.txt";
     string route_file = "data_set/routes.dat.txt";
+    Graph graph(true, true);
 
-    if (!initializeEdge(airline_file))
-        std::cout<< "Invalid airline_file." << std::endl;
-
-    if (!processAirportData(airport_file))
+    // Add vertices first;
+    if (!addAirportVertices(airport_file, graph))
         std::cout<< "Oops cannot read airport file." << std::endl;
 
-    if (!processRouteData(route_file))
+    // Connect edge.
+    if (!connectVertice(route_file, graph))
+        std::cout<< "Invalid airline_file." << std::endl;
+
+    if (!initializeEdge(route_file))
         std::cout<< "Oops cannot read route file." << std::endl;
 
+    std::cout<< "NUMBER OF AIRPORT called using getVertices.size(): " << graph.getVertices().size() << std::endl;
 
     return 0;
 }
