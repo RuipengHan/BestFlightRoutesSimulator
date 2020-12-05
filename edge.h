@@ -52,7 +52,7 @@ class Edge {
         }
     };
 
-  public:
+public:
     Vertex source; /**< The source of the edge **/
     Vertex dest; /**< The destination of the edge **/
 
@@ -62,7 +62,7 @@ class Edge {
      * @param v - the other vertex it is connected to
      */
     Edge(Vertex u, Vertex v)
-        : source(u), dest(v), label(""), weight(-1)
+            : source(u), dest(v), label(""), weight(-1)
     { /* nothing */
     }
 
@@ -73,7 +73,7 @@ class Edge {
      * @param lbl - the edge label
      */
     Edge(Vertex u, Vertex v, string lbl)
-        : source(u), dest(v), label(lbl), weight(-1)
+            : source(u), dest(v), label(lbl), weight(-1)
     { /* nothing */
     }
 
@@ -85,7 +85,7 @@ class Edge {
      * @param lbl - the edge label
      */
     Edge(Vertex u, Vertex v, int w, string lbl)
-        : source(u), dest(v), label(lbl), weight(w)
+            : source(u), dest(v), label(lbl), weight(w)
     { /* nothing */
     }
 
