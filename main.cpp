@@ -8,18 +8,9 @@
 #include "edge.h"
 
 using namespace std;
+Edge::AirlineMap Edge::id_airline_info_map_ = {};
 map<pair<string, string>, vector<string>> all_airlines_in_edge_map;
 
-vector<string> parse(string my_str) {
-    vector<string> result;
-    stringstream s_stream(my_str); //create string stream from the string
-    while(s_stream.good()) {
-        string substr;
-        getline(s_stream, substr, ','); //get first string delimited by comma
-        result.push_back(substr);
-    }
-    return result;
-}
 vector<string> parseByComma(string info) {
     vector<string> result;
     stringstream s_stream(info); //create string stream from the string
@@ -129,8 +120,7 @@ void initializeEdge(Graph& graph) {
     }
 
 }
-Edge::AirlineMap Edge::id_airline_info_map_ = {
-};
+
 /**
  * Initialize the static variable map in edge.h; to let edge class has all airline information.
  * @param airline_file
