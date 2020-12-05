@@ -5,7 +5,10 @@
 #include <fstream>
 #include "graph.h"
 #include "Vertex.h"
+#include "edge.h"
+
 using namespace std;
+map<pair<string, string>, vector<string>> all_edge_airlines_;
 
 vector<string> parseByComma(string info) {
     vector<string> result;
@@ -44,11 +47,21 @@ bool connectVertice(string& filename, Graph& graph, map<string, Vertex>& airport
             parsed_result = parseByComma(each_row);
             Vertex start = airport_dic.find(parsed_result[3])->second;
             Vertex end = airport_dic.find(parsed_result[5])->second;
+            // If the graph doesn't contain the edge yet, insert.
             if (!graph.edgeExists(start, end) && start.airport_id_ != "" && end.airport_id_ != "") {
                 graph.insertEdge(start, end);
             }
+            pair<string, string> edge_key{start.airport_id_, end.airport_id_};
+            if (all_edge_airlines_.find(edge_key) != all_edge_airlines_.end() && start.airport_id_ != "" && end.airport_id_ != "")
+                all_edge_airlines_[edge_key].push_back(parsed_result[1]); // parsed_result[1] is the airline id
+            else if (start.airport_id_ != "" && end.airport_id_ != "") {
+                vector<string> value;
+                value.push_back(parsed_result[1]);
+                all_edge_airlines_.insert({edge_key, value}); // insert it if no previous record found.
+            }
         }
         cout<< "Number of unknown airport trying to add edge is: " << counter << endl;
+        cout<< "Number of edges in the  all_edge_airlines_ is: " << all_edge_airlines_.size() << endl;
         return true;
     }
     return false;
@@ -85,16 +98,22 @@ bool addAirportVertices(string& filename, Graph& graph, map<string, Vertex>& air
     return false;
 }
 
-bool initializeEdge(string& filename) {
+bool initializeEdge(string& filename, Graph& graph, map<string, Vertex>& airport_dic) {
     ifstream airline(filename);
     string each_row;
-    if (airline.is_open()) {
-        while (getline(airline, each_row)) {
-            // Process this row;
-        }
-        return true;
-    }
+//    if (airline.is_open()) {
+//        while (getline(airline, each_row)) {
+//            // Process this row;
+//        }
+//        return true;
+//    }
 
+// pc: loop through every route data
+    vector<Edge> edges = graph.getEdges();
+    for (Edge& edge : edges) {
+
+        // edge.addAirline();
+    }
     return false;
 }
 
@@ -115,7 +134,7 @@ int main() {
     if (!connectVertice(route_file, graph, airport_dict))
         std::cout<< "Invalid airline_file." << std::endl;
 
-    if (!initializeEdge(route_file))
+    if (!initializeEdge(route_file, graph, airport_dict))
         std::cout<< "Oops cannot read route file." << std::endl;
 
     std::cout<< "NUMBER OF AIRPORT called using getVertices.size(): " << graph.getVertices().size() << std::endl;
