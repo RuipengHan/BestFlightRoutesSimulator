@@ -8,7 +8,6 @@
 #include "edge.h"
 
 using namespace std;
-
 map<pair<string, string>, vector<string>> all_airlines_in_edge_map;
 
 vector<string> parse(string my_str) {
@@ -21,7 +20,6 @@ vector<string> parse(string my_str) {
     }
     return result;
 }
-
 vector<string> parseByComma(string info) {
     vector<string> result;
     stringstream s_stream(info); //create string stream from the string
@@ -57,6 +55,14 @@ bool connectVertice(string& filename, Graph& graph, map<string, Vertex>& airport
     if (route.is_open()) {
         while (getline(route, each_row)) {
             parsed_result = parseByComma(each_row);
+            // MF THIS MF DATA SET. SPEND TWO WHOLE HOURS FIGURING OUT THAT AIRPORT ID CAN BE '\N'
+            // If an ID doesn't contain numbers, that is, '\N', ignore this motherfk row entry.
+            if (parsed_result[1].find_first_of("0123456789") == std::string::npos ||
+                parsed_result[3].find_first_of("0123456789") == std::string::npos ||
+                parsed_result[5].find_first_of("0123456789") == std::string::npos) {
+                continue;
+            }
+
             Vertex start = airport_dic.find(parsed_result[3])->second;
             Vertex end = airport_dic.find(parsed_result[5])->second;
             // If the graph doesn't contain the edge yet, insert.
@@ -64,16 +70,16 @@ bool connectVertice(string& filename, Graph& graph, map<string, Vertex>& airport
                 graph.insertEdge(start, end);
             }
             pair<string, string> edge_key{start.airport_id_, end.airport_id_};
-            if (all_edge_airlines_.find(edge_key) != all_edge_airlines_.end() && start.airport_id_ != "" && end.airport_id_ != "")
-                all_edge_airlines_[edge_key].push_back(parsed_result[1]); // parsed_result[1] is the airline id
+            if (all_airlines_in_edge_map.find(edge_key) != all_airlines_in_edge_map.end() && start.airport_id_ != "" && end.airport_id_ != "")
+                all_airlines_in_edge_map[edge_key].push_back(parsed_result[1]); // parsed_result[1] is the airline id
             else if (start.airport_id_ != "" && end.airport_id_ != "") {
                 vector<string> value;
                 value.push_back(parsed_result[1]);
-                all_edge_airlines_.insert({edge_key, value}); // insert it if no previous record found.
+                all_airlines_in_edge_map.insert({edge_key, value}); // insert it if no previous record found.
             }
         }
         cout<< "Number of unknown airport trying to add edge is: " << counter << endl;
-        cout<< "Number of edges in the  all_edge_airlines_ is: " << all_edge_airlines_.size() << endl;
+        cout<< "Number of edges in the  all_airlines_in_edge_map is: " << all_airlines_in_edge_map.size() << endl;
         return true;
     }
     return false;
@@ -110,21 +116,42 @@ bool addAirportVertices(string& filename, Graph& graph, map<string, Vertex>& air
     return false;
 }
 
-bool initializeEdge(string& filename, Graph& graph, map<string, Vertex>& airport_dic) {
-    ifstream airline(filename);
-    string each_row;
-//    if (airline.is_open()) {
-//        while (getline(airline, each_row)) {
-//            // Process this row;
-//        }
-//        return true;
-//    }
-
-// pc: loop through every route data
+/**
+ * Populate the edges with all airlines pass through it.
+ * @param graph
+ */
+void initializeEdge(Graph& graph) {
+    // pc: loop through every route data
     vector<Edge> edges = graph.getEdges();
     for (Edge& edge : edges) {
+        // Use the map and pass in the source+dest key to find vector of all airport ids and add it to the edge.
+        edge.addAirline(all_airlines_in_edge_map[{edge.source.airport_id_, edge.dest.airport_id_}], Edge::id_airline_info_map_);
+    }
 
-        // edge.addAirline();
+}
+Edge::AirlineMap Edge::id_airline_info_map_ = {
+};
+/**
+ * Initialize the static variable map in edge.h; to let edge class has all airline information.
+ * @param airline_file
+ * @return
+ */
+bool processAirlineFile(string& airline_file) {
+    ifstream airline(airline_file);
+    string each_row;
+    Edge edge;
+    vector<string> result;
+
+    if (airline.is_open()) {
+        // for each line of airport data:
+        while (getline(airline, each_row)) {
+            result = parseByComma(each_row);
+            // result[0] is the airline id; if it hasn't present in the map add it.
+            if (Edge::id_airline_info_map_.find(result[0]) == Edge::id_airline_info_map_.end()) {
+                Edge::id_airline_info_map_.insert({result[0], result});
+            }
+        }
+        return true;
     }
     return false;
 }
@@ -138,17 +165,20 @@ int main() {
     map<string, Vertex> airport_dict;
 
 
-    // Add vertices first meanwhile correlating each airport vertex to its id (populate the airport_dict)
+    // Add vertices first meanwhile correlating each airport vertex to its id (populate the airport_dict). Checked Okay
     if (!addAirportVertices(airport_file, graph, airport_dict))
         std::cout<< "Oops cannot read airport file." << std::endl;
 
-    // Then connect edge.
+    // Then connect edge. Checked Okay
     if (!connectVertice(route_file, graph, airport_dict))
         std::cout<< "Invalid airline_file." << std::endl;
 
-    if (!initializeEdge(route_file, graph, airport_dict))
+    // Then map the airline id to its data; Checked Okay
+    if (!processAirlineFile(airline_file))
         std::cout<< "Oops cannot read route file." << std::endl;
 
+    initializeEdge(graph);
+    std::cout<< "NUMBER Airlines: " << Edge::id_airline_info_map_.size() << std::endl;
     std::cout<< "NUMBER OF AIRPORT called using getVertices.size(): " << graph.getVertices().size() << std::endl;
     std::cout<< "SIZE OF THE MAP: " << airport_dict.size() << std::endl;
     std::cout<< "NUMBER OF EDGES IN THE GRAPH: " << graph.getEdges().size() << std::endl;
