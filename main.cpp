@@ -3,6 +3,8 @@
 //
 #include <iostream>
 #include <fstream>
+#include <cmath> 
+#include <queue>
 #include "graph.h"
 #include "Vertex.h"
 #include "edge.h"
@@ -33,6 +35,28 @@ vector<string> parseByComma(string info) {
     return result;
 }
 
+/**
+ * Calculate distance between two airports.
+ * @param lat1 First latitude 
+ * @param lon1 First longitude
+ * @param lat2 Second latitude 
+ * @param lon2 Second longitude
+ * @return double -- Actual distance between two airports
+ */
+double calculateDist(double lat1, double lon1, double lat2, double lon2) {
+    // distance between latitudes and longitudes 
+    double dLat = (lat2 - lat1) * M_PI / 180.0; 
+    double dLon = (lon2 - lon1) * M_PI / 180.0; 
+    // convert to radians 
+    lat1 = (lat1) * M_PI / 180.0; 
+    lat2 = (lat2) * M_PI / 180.0; 
+    // apply formulae 
+    double a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(lat1) * cos(lat2); 
+    double rad = 6371; 
+    double c = 2 * asin(sqrt(a)); 
+    return rad * c; 
+}
+
 /*
  * This process route data by going through all possible departure/dest airport.
  * The edge is initially empty of airlines. This function is just responsible for connecting a basic line between nodes.
@@ -59,6 +83,10 @@ bool connectVertice(string& filename, Graph& graph, map<string, Vertex>& airport
             // If the graph doesn't contain the edge yet, insert.
             if (!graph.edgeExists(start, end) && start.airport_id_ != "" && end.airport_id_ != "") {
                 graph.insertEdge(start, end);
+
+                // Set edge's weight using distance between two vertices
+                double dist = calculateDist(start.latitude_, start.longitude_, end.latitude_, end.longitude_);
+                graph.setEdgeWeight(start, end, (int)dist);
             }
             pair<string, string> edge_key{start.airport_id_, end.airport_id_};
             if (all_airlines_in_edge_map.find(edge_key) != all_airlines_in_edge_map.end() && start.airport_id_ != "" && end.airport_id_ != "")
@@ -144,6 +172,45 @@ bool processAirlineFile(string& airline_file) {
         return true;
     }
     return false;
+}
+
+/**
+ * Dijkstra algorithm implementation
+ * @param graph 
+ * @param s The starting vertex
+ * @return a map with every vertex as key and its corresponding previous vertex as value
+ */
+map<Vertex, Vertex> Dijkstra(Graph& graph, Vertex& s) {
+    map<Vertex, Vertex> p;
+    map<Vertex, int> d;
+    for (Vertex& v : graph.getVertices()) {
+        d.insert({v, INT_MAX});
+    }
+    d[s] = 0;
+
+    priority_queue<pair<Vertex, int>, vector<pair<Vertex, int>>, greater<pair<Vertex, int>>> Q;
+    Q.push({s, 0});
+    Graph T(true, true);
+
+    while(!Q.empty()) {
+        Vertex u = Q.top().first;
+        Q.pop();
+        T.insertVertex(u);
+        vector<Vertex> neighbors = graph.getAdjacent(u);
+        for (Vertex v : neighbors) {
+            vector<Vertex> T_neighbors = T.getAdjacent(u);
+            if (find(T_neighbors.begin(), T_neighbors.end(), v) == T_neighbors.end()) {
+                if (graph.getEdgeWeight(u, v) + d[u] < d[v]) {
+                    d[v] = graph.getEdgeWeight(u, v) + d[u];
+                    p.insert({v, u});
+                    T.insertEdge(u, v);
+                    Q.push({v, d[v]});
+                }
+            }
+        }
+    }
+
+    return p;
 }
 
 int main() {
