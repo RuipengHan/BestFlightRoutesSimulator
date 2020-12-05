@@ -9,8 +9,6 @@
 
 using namespace std;
 map<pair<string, string>, vector<string>> all_airlines_in_edge_map;
-//map<string, vector<string>> id_airline_info_map_;
-
 
 vector<string> parse(string my_str) {
     vector<string> result;
