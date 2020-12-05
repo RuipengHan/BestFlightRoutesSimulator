@@ -50,12 +50,6 @@ class Edge {
             name_ = result[1];
             country_ = result[6];
         }
-
-        Airline(vector<string> result) {
-            id_ = result[0];
-            name_ = result[1];
-            country_ = result[6];
-        }
     };
 
 public:
@@ -146,38 +140,12 @@ public:
      * Add given airline to the route/edge.
      * @param airline
      */
-    void addAirline(string& airline) {
+    void addAirline(string airline) {
         Airline new_airline(airline);
         airlines_.push_back(new_airline);
     }
 
-    void addAirline(vector<string>& airlines_id, map<string, vector<string>>& id_airline_info_map_) {
-        for (string& each_string : airlines_id) {
-            if (id_airline_info_map_.find(each_string) != id_airline_info_map_.end()) {
-                Airline airline(id_airline_info_map_[each_string]);
-                airlines_.push_back(airline);
-            }
-        }
-        //cout << "This edge has:" << airlines_.size() << " airlines."<< endl;
-        if (airlines_.size() == 0) {
-            cout << "This edge has 0 airlines, which is wrong: "<< endl;
-            for (string& each_string : airlines_id) {
-                cout << each_string << ", ";
-            }
-            cout << endl;
-        }
-
-    }
-
-public:
-    /**
-     * Static map that maps the airline id to all the data entry relevant; it is shared by all edge instances.
-     */
-    typedef map<string, vector<string>> AirlineMap;
-    static AirlineMap id_airline_info_map_;
-
 private:
-
     string label; /**< The edge label **/
     int weight; /**< The edge weight (if in a weighed graph) In this case, it is the distance between 2 airports**/
     vector<Airline> airlines_;
