@@ -9,10 +9,53 @@
 #include <limits.h>
 #include "Vertex.h"
 #include <map>
+#include <algorithm>
 using std::string;
-
+using std::find;
 //typedef string Vertex;
 
+
+class Airline {
+public:
+    string name_;
+    string id_;
+    string country_;
+
+    Airline(string info) {
+        // Parse
+        vector<string> result;
+        stringstream s_stream(info); //create string stream from the string
+
+        //vector<string> parsed_row;
+        string line;
+        while (std::getline(s_stream, line)) {        // read full line
+            const char *mystart=line.c_str();    // prepare to parse the line - start is position of begin of field
+            bool instring{false};
+            for (const char* p=mystart; *p; p++) {  // iterate through the string
+                if (*p=='"')                        // toggle flag if we're btw double quote
+                    instring = !instring;
+                else if (*p==',' && !instring) {    // if comma OUTSIDE double quote
+                    result.push_back(string(mystart,p-mystart));  // keep the field
+                    mystart=p+1;                    // and start parsing next one
+                }
+            }
+            result.push_back(string(mystart));   // last field delimited by end of line instead of comma
+        }
+        id_ = result[0];
+        name_ = result[1];
+        country_ = result[6];
+    }
+
+    Airline(vector<string> result) {
+        id_ = result[0];
+        name_ = result[1];
+        country_ = result[6];
+    }
+
+    bool operator==(const Airline &other) const {
+        return this->id_ == other.id_;
+    }
+};
 
 /**
  * Represents an edge in a graph; used by the Graph class.
@@ -21,42 +64,6 @@ using std::string;
  * @date Spring 2012
  */
 class Edge {
-    struct Airline {
-        string name_;
-        string id_;
-        string country_;
-
-        Airline(string info) {
-            // Parse
-            vector<string> result;
-            stringstream s_stream(info); //create string stream from the string
-
-            //vector<string> parsed_row;
-            string line;
-            while (std::getline(s_stream, line)) {        // read full line
-                const char *mystart=line.c_str();    // prepare to parse the line - start is position of begin of field
-                bool instring{false};
-                for (const char* p=mystart; *p; p++) {  // iterate through the string
-                    if (*p=='"')                        // toggle flag if we're btw double quote
-                        instring = !instring;
-                    else if (*p==',' && !instring) {    // if comma OUTSIDE double quote
-                        result.push_back(string(mystart,p-mystart));  // keep the field
-                        mystart=p+1;                    // and start parsing next one
-                    }
-                }
-                result.push_back(string(mystart));   // last field delimited by end of line instead of comma
-            }
-            id_ = result[0];
-            name_ = result[1];
-            country_ = result[6];
-        }
-
-        Airline(vector<string> result) {
-            id_ = result[0];
-            name_ = result[1];
-            country_ = result[6];
-        }
-    };
 
 public:
     Vertex source; /**< The source of the edge **/
@@ -152,21 +159,27 @@ public:
     }
 
     void addAirline(vector<string>& airlines_id, map<string, vector<string>>& id_airline_info_map_) {
-        for (string& each_string : airlines_id) {
+        for (string each_string : airlines_id) {
             if (id_airline_info_map_.find(each_string) != id_airline_info_map_.end()) {
                 Airline airline(id_airline_info_map_[each_string]);
-                airlines_.push_back(airline);
+                if (find(airlines_.begin(), airlines_.end(), airline) == airlines_.end()) {
+                    airlines_.push_back(airline);
+                }
             }
         }
         //cout << "This edge has:" << airlines_.size() << " airlines."<< endl;
-        if (airlines_.size() == 0) {
+        if (airlines_.size() < 1) {
             cout << "This edge has 0 airlines, which is wrong: "<< endl;
             for (string& each_string : airlines_id) {
                 cout << each_string << ", ";
             }
             cout << endl;
         }
+        // cout << "This edge has 0 airlines, which is wrong: "<< endl;
+    }
 
+    vector<Airline> GetAirlines() {
+        return airlines_;
     }
 
 public:

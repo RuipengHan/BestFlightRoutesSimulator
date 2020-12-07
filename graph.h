@@ -118,6 +118,15 @@ public:
      */
     Edge getEdge(Vertex source, Vertex destination) const;
 
+
+    /**
+    * Gets an edge between two vertices.
+    * @param source - one vertex the edge is connected to
+    * @param destination - the other vertex the edge is connected to
+    * @return - if exist, return the corresponding edge
+    *         - if edge doesn't exist, return Edge()
+    */
+    Edge& getEdgeReference(Vertex source, Vertex destination);
     /**
      * Gets all the edges in the graph.
      * @return a vector of all the edges in the graph
