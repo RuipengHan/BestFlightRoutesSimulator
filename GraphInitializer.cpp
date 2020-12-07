@@ -97,8 +97,11 @@ bool GraphInitializer::connectVertices() {
                 graph_.insertEdge(start, end);
             }
             pair<string, string> edge_key{start.airport_id_, end.airport_id_};
-            if (all_airlines_in_edge_map_.find(edge_key) != all_airlines_in_edge_map_.end() && start.airport_id_ != "" && end.airport_id_ != "")
-                all_airlines_in_edge_map_[edge_key].push_back(parsed_result[1]); // parsed_result[1] is the airline id
+            if (all_airlines_in_edge_map_.find(edge_key) != all_airlines_in_edge_map_.end() && start.airport_id_ != "" && end.airport_id_ != "") {
+                // If this airline hasn't been recorded in the edge yet, add it. This prevents duplicate of airlines in the edge.
+                if (find(all_airlines_in_edge_map_[edge_key].begin(), all_airlines_in_edge_map_[edge_key].end(), parsed_result[1]) == all_airlines_in_edge_map_[edge_key].end())
+                    all_airlines_in_edge_map_[edge_key].push_back(parsed_result[1]); // parsed_result[1] is the airline id
+            }
             else if (start.airport_id_ != "" && end.airport_id_ != "") {
                 vector<string> value;
                 value.push_back(parsed_result[1]);
@@ -137,10 +140,19 @@ void GraphInitializer::initializeEdge() {
     vector<Edge> edges = graph_.getEdges();
     for (Edge& edge : edges) {
         // Use the map and pass in the source+dest key to find vector of all airport ids and add it to the edge.
-        edge.addAirline(all_airlines_in_edge_map_[{edge.source.airport_id_, edge.dest.airport_id_}], Edge::id_airline_info_map_);
+        Edge& edge_update = graph_.getEdgeReference(edge.source, edge.dest);
+        edge_update.addAirline(all_airlines_in_edge_map_[{edge.source.airport_id_, edge.dest.airport_id_}], Edge::id_airline_info_map_);
     }
 }
 
 Graph& GraphInitializer::GetGraph() {
     return graph_;
+}
+
+map<string, Vertex> GraphInitializer::GetAirportDict() const{
+    return airport_dict_;
+}
+
+map<pair<string, string>, vector<string>> GraphInitializer::Getall_airlines_in_edge_map_() const {
+    return all_airlines_in_edge_map_;
 }

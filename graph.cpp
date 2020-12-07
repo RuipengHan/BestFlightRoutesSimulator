@@ -68,6 +68,11 @@ Edge Graph::getEdge(Vertex source , Vertex destination) const
     return ret;
 }
 
+Edge& Graph::getEdgeReference(Vertex source, Vertex destination) {
+    Edge& ret = adjacency_list[source][destination];
+    return ret;
+}
+
 vector<Edge> Graph::getEdges() const
 {
     if (adjacency_list.empty())

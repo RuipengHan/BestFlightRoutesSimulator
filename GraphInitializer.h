@@ -30,8 +30,12 @@ public:
      */
     bool GraphInit();
 
+    // Getters
     Graph& GetGraph();
-private:
+    map<string, Vertex> GetAirportDict() const;
+    map<pair<string, string>, vector<string>> Getall_airlines_in_edge_map_() const;
+
+public:
     Graph & graph_;       // Graph to be initialized
     string airport_file_; // Address of file
     string airline_file_; // Address of file
@@ -47,7 +51,6 @@ private:
      * Map airport ID to its vertex.
      */
     map<string, Vertex> airport_dict_;
-
 
     /**
      * Parse a single line of text by comma.
@@ -84,5 +87,6 @@ private:
      * that is, make sure each edge in the graph has all airelines in it.
      */
     void initializeEdge();
+
 };
 #endif //FINAL_PROJECT_GRAPHINITIALIZER_H
