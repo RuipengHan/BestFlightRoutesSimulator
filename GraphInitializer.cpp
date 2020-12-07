@@ -35,18 +35,16 @@ bool GraphInitializer::GraphInit() {
 vector<string> GraphInitializer:: parseByComma(string info) {
     vector<string> result;
     stringstream s_stream(info); //create string stream from the string
-
-    //vector<string> parsed_row;
     string line;
     while (std::getline(s_stream, line)) {        // read full line
-        const char *mystart=line.c_str();    // prepare to parse the line - start is position of begin of field
+        const char *mystart = line.c_str();    // prepare to parse the line - start is position of begin of field
         bool instring{false};
         for (const char* p=mystart; *p; p++) {  // iterate through the string
-            if (*p=='"')                        // toggle flag if we're btw double quote
+            if (*p == '"')                        // toggle flag if we're btw double quote
                 instring = !instring;
-            else if (*p==',' && !instring) {    // if comma OUTSIDE double quote
+            else if (*p == ',' && !instring) {    // if comma OUTSIDE double quote
                 result.push_back(string(mystart,p-mystart));  // keep the field
-                mystart=p+1;                    // and start parsing next one
+                mystart = p+1;                    // and start parsing next one
             }
         }
         result.push_back(string(mystart));   // last field delimited by end of line instead of comma
@@ -61,15 +59,13 @@ bool GraphInitializer::addAirportVertices() {
     if (airport.is_open()) {
         // for each line of airport data:
         while (getline(airport, each_row)) {
-            // Process this row;
             Vertex new_vertex(each_row);
             // Add the new vertex to graph;
             if (!graph_.vertexExists(new_vertex))
                 graph_.insertVertex(new_vertex);
-            // Add the new vertex to the dictionary.
+            // Add the new vertex to the dictionary, which maps the airport ID to its vertex.
             if (airport_dict_.find(new_vertex.airport_id_) == airport_dict_.end())
                 airport_dict_.insert({new_vertex.airport_id_, new_vertex});
-            //new_vertex.print();
             count++;
         }
         std::cout<< "AFTER READ, WE HAVE NUM OF AIRPORTS: " << count << std::endl;
@@ -109,8 +105,7 @@ bool GraphInitializer::connectVertices() {
                 all_airlines_in_edge_map_.insert({edge_key, value}); // insert it if no previous record found.
             }
         }
-        //cout<< "Number of unknown airport trying to add edge is: " << counter << endl;
-        cout<< "Number of edges in the  all_airlines_in_edge_map is: " << all_airlines_in_edge_map_.size() << endl;
+        cout<< "Number of edges in the all_airlines_in_edge_map is: " << all_airlines_in_edge_map_.size() << endl;
         return true;
     }
     return false;
@@ -144,4 +139,8 @@ void GraphInitializer::initializeEdge() {
         // Use the map and pass in the source+dest key to find vector of all airport ids and add it to the edge.
         edge.addAirline(all_airlines_in_edge_map_[{edge.source.airport_id_, edge.dest.airport_id_}], Edge::id_airline_info_map_);
     }
+}
+
+Graph& GraphInitializer::GetGraph() {
+    return graph_;
 }
