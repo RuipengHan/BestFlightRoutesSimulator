@@ -108,6 +108,18 @@ public:
      */
     vector<Vertex> getVertices() const;
 
+    /**
+    * Get vertex in the graph.
+    * @return vertex by name
+    */
+    Vertex getVertexByName(string name) const;
+
+    /**
+    * Get vertex in the graph.
+    * @return vertex by name
+    */
+    Vertex getVertexById(string id) const;
+
 
     /**
      * Gets an edge between two vertices.

@@ -7,6 +7,9 @@
 #include "Vertex.h"
 #include "edge.h"
 
+#include "BFS.h"        /* bfs traversal */
+#include <stdlib.h>     /* srand, rand */
+
 using namespace std;
 Edge::AirlineMap Edge::id_airline_info_map_ = {};
 map<pair<string, string>, vector<string>> all_airlines_in_edge_map;
@@ -154,7 +157,6 @@ int main() {
     Graph graph(true, true);
     map<string, Vertex> airport_dict;
 
-
     // Add vertices first meanwhile correlating each airport vertex to its id (populate the airport_dict). Checked Okay
     if (!addAirportVertices(airport_file, graph, airport_dict))
         std::cout<< "Oops cannot read airport file." << std::endl;
@@ -172,5 +174,20 @@ int main() {
     std::cout<< "NUMBER OF AIRPORT called using getVertices.size(): " << graph.getVertices().size() << std::endl;
     std::cout<< "SIZE OF THE MAP: " << airport_dict.size() << std::endl;
     std::cout<< "NUMBER OF EDGES IN THE GRAPH: " << graph.getEdges().size() << std::endl;
+
+    vector<Vertex> all_airports = graph.getVertices();
+    //Vertex start = all_airports[rand() % all_airports.size()];
+    //Vertex start = all_airports[3247];
+    Vertex start = graph.getVertexById("3682");
+    //Vertex start = graph.getVertexByName("Newark Liberty International Airport");
+    //Vertex end = all_airports[rand() % all_airports.size()];
+    //Vertex end = all_airports[3251];
+    Vertex end = graph.getVertexById("3494");
+    //Vertex start = graph.getVertexByName("Newark Liberty International Airport");
+    BFS bfs(graph, start, end, 3);
+    bfs.findPath();
+
+    std::cout << "Hello World." << std::endl;
+
     return 0;
 }
