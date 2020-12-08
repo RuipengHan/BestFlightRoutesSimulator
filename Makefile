@@ -4,7 +4,7 @@ TEST = test
 
 # Add all object files needed for compiling:
 EXE_OBJ = main.o
-OBJS = main.o graph.o Vertex.o BFS.o
+OBJS = main.o graph.o Vertex.o GraphInitializer.o BFS.o
 
 # Generated files
 CLEAN_RM = images/Out.png
