@@ -20,7 +20,7 @@ public:
     double altitude_;
     bool invalid_vertex_; // used to deal with invalidVertex and invalidEdge in Graph.cpp;
     Vertex(string info); // Receiving in a string and Parse by comma；
-    Vertex();
+    Vertex() {  }
 
     /**
      * Construct an invalid vertex. Please see
