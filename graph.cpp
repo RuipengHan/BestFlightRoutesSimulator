@@ -60,6 +60,39 @@ vector<Vertex> Graph::getVertices() const
     return ret;
 }
 
+/**
+* Get vertex in the graph.
+* @return vertex by name
+*/
+Vertex Graph::getVertexByName(string name) const {
+    name = "\"" + name + "\"";
+    vector<Vertex> ret = getVertices();
+    for (unsigned i = 0; i < ret.size(); i++) {
+        //cout << ret[i].name_ << endl; //print-------------------------------------------
+        if (ret[i].name_ == name) {
+            return ret[i];
+        }
+    }
+    cout << "vertex not found" << endl;
+    return NULL;
+}
+
+/**
+* Get vertex in the graph.
+* @return vertex by name
+*/
+Vertex Graph::getVertexById(string id) const {
+    vector<Vertex> ret = getVertices();
+    for (unsigned i = 0; i < ret.size(); i++) {
+        //cout << ret[i].name_ << endl; //print-------------------------------------------
+        if (ret[i].airport_id_ == id) {
+            return ret[i];
+        }
+    }
+    cout << "vertex not found" << endl;
+    return NULL;
+}
+
 Edge Graph::getEdge(Vertex source , Vertex destination) const
 {
     if(assertEdgeExists(source, destination, __func__) == false)
