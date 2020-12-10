@@ -32,6 +32,16 @@ public:
      */
     bool GraphInit();
 
+    /**
+     * Test for Calculate distance between two airports.
+     * @param lat1 First latitude
+     * @param lon1 First longitude
+     * @param lat2 Second latitude
+     * @param lon2 Second longitude
+     * @return double -- Actual distance between two airports
+     */
+    double calculateDistTest(double lat1, double lon1, double lat2, double lon2);
+
     // Getters
     Graph& GetGraph();
     map<string, Vertex> GetAirportDict() const;
