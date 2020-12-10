@@ -17,6 +17,8 @@ map<pair<string, string>, int> all_edges;
 map<pair<string, string>, map<string, int>> expected_airlines_edge;
 Graph graph(true, true);
 string airport_file = "data_set/airports.dat.txt";
+string airport_file_test = "tests/airports_test.dat.txt";
+
 string airline_file = "data_set/airlines.dat.txt";
 string route_file = "data_set/routes.dat.txt";
 
@@ -148,6 +150,32 @@ TEST_CASE("Test parse by comma, with double quotes and comma in side", "step 0")
     vector<string> expected = { "s", " 2", " 1", " \"string, good\"", " good", "", " " };
     vector<string> actual = graphInitializer.parseByComma(test_line);
     REQUIRE(expected == actual);
+}
+
+TEST_CASE("Test distance, used for setting weight", "step 0") {
+    Graph graph_test(true, true);
+    GraphInitializer graphIni(graph_test, airport_file_test, airline_file, route_file);
+    graphIni.GraphInit();
+    // Actual distance 23.04km
+    Vertex Beijing_capital = graph_test.getVertexById("1");
+    Vertex nanyuan = graph_test.getVertexById("2");
+    int beijing_capital_to_nanyuan = graph_test.getEdgeWeight(Beijing_capital, nanyuan);
+    // Give it a little tolerance (2km)
+    bool beijing_capital_to_nanyuan_ = (beijing_capital_to_nanyuan <= 39 && beijing_capital_to_nanyuan > 35);
+    //cout << "Distance between beijing capital to nanyuan: " << beijing_capital_to_nanyuan << endl;
+    REQUIRE(beijing_capital_to_nanyuan_ == true);
+
+    // Actual Distance 1,078 km
+    Vertex Pudong =  graph_test.getVertexById("3");
+    int pudong_to_nanyuan = graph_test.getEdgeWeight(Pudong, nanyuan);
+    bool pudong_to_nanyuan_ = (pudong_to_nanyuan <= 1080 && pudong_to_nanyuan > 1076);
+    REQUIRE(pudong_to_nanyuan_ == true);
+
+    // Actual Distance 12,341.57 km
+    Vertex madison =  graph_test.getVertexById("5");
+    int pudong_to_madison = graph_test.getEdgeWeight(Pudong, madison);
+    bool pudong_to_madison_ = (pudong_to_madison <= 12343 && pudong_to_madison > 12339);
+    REQUIRE(pudong_to_madison_ == true);
 }
 
 // DON'T SWAP THE ORDER OF THIS TEST! OTHERWISE TESTS WILL BREAK;

@@ -89,6 +89,10 @@ double GraphInitializer::calculateDist(double lat1, double lon1, double lat2, do
     return rad * c; 
 }
 
+double GraphInitializer::calculateDistTest(double lat1, double lon1, double lat2, double lon2) {
+    return calculateDist(lat1, lon1, lat2, lon2);
+}
+
 bool GraphInitializer::connectVertices() {
     ifstream route(route_file_);
     string each_row;
