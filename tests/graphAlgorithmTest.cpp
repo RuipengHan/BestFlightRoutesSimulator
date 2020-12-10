@@ -4,8 +4,8 @@
 
 #include <algorithm>
 #include "../cs225/catch/catch.hpp"
-#include "/Users/ruipenghan/cs225git/final_project/graph.h"
-#include "/Users/ruipenghan/cs225git/final_project/GraphInitializer.h"
+#include "../graph.h"
+#include "../GraphInitializer.h"
 /**
  * This test file will test the algorithm and traversal part of the graph.
  */
