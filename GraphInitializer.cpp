@@ -75,6 +75,20 @@ bool GraphInitializer::addAirportVertices() {
     return false;
 }
 
+double GraphInitializer::calculateDist(double lat1, double lon1, double lat2, double lon2) {
+    // distance between latitudes and longitudes 
+    double dLat = (lat2 - lat1) * M_PI / 180.0; 
+    double dLon = (lon2 - lon1) * M_PI / 180.0; 
+    // convert to radians 
+    lat1 = (lat1) * M_PI / 180.0; 
+    lat2 = (lat2) * M_PI / 180.0; 
+    // apply formulae 
+    double a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(lat1) * cos(lat2); 
+    double rad = 6371; 
+    double c = 2 * asin(sqrt(a)); 
+    return rad * c; 
+}
+
 bool GraphInitializer::connectVertices() {
     ifstream route(route_file_);
     string each_row;
@@ -95,6 +109,10 @@ bool GraphInitializer::connectVertices() {
             // If the graph doesn't contain the edge yet, insert.
             if (!graph_.edgeExists(start, end) && start.airport_id_ != "" && end.airport_id_ != "") {
                 graph_.insertEdge(start, end);
+
+                // Set edge's weight using distance between two vertices
+                double dist = calculateDist(start.latitude_, start.longitude_, end.latitude_, end.longitude_);
+                graph_.setEdgeWeight(start, end, (int)dist);
             }
             pair<string, string> edge_key{start.airport_id_, end.airport_id_};
             if (all_airlines_in_edge_map_.find(edge_key) != all_airlines_in_edge_map_.end() && start.airport_id_ != "" && end.airport_id_ != "") {
