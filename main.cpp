@@ -15,27 +15,6 @@
 using namespace std;
 Edge::AirlineMap Edge::id_airline_info_map_ = {};
 
-/**
- * Calculate distance between two airports.
- * @param lat1 First latitude 
- * @param lon1 First longitude
- * @param lat2 Second latitude 
- * @param lon2 Second longitude
- * @return double -- Actual distance between two airports
- */
-double calculateDist(double lat1, double lon1, double lat2, double lon2) {
-    // distance between latitudes and longitudes 
-    double dLat = (lat2 - lat1) * M_PI / 180.0; 
-    double dLon = (lon2 - lon1) * M_PI / 180.0; 
-    // convert to radians 
-    lat1 = (lat1) * M_PI / 180.0; 
-    lat2 = (lat2) * M_PI / 180.0; 
-    // apply formulae 
-    double a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(lat1) * cos(lat2); 
-    double rad = 6371; 
-    double c = 2 * asin(sqrt(a)); 
-    return rad * c; 
-}
 
 /**
  * Dijkstra algorithm implementation
@@ -90,12 +69,12 @@ int main() {
     vector<Vertex> all_airports = graph.getVertices();
     //Vertex start = all_airports[rand() % all_airports.size()];
     //Vertex start = all_airports[3247];
-    Vertex start = graph.getVertexById("3682");
-    //Vertex start = graph.getVertexByName("Newark Liberty International Airport");
+    //Vertex start = graph.getVertexById("3682");
+    Vertex start = graph.getVertexByName("Taoxian Airport");
     //Vertex end = all_airports[rand() % all_airports.size()];
     //Vertex end = all_airports[3251];
-    Vertex end = graph.getVertexById("3494");
-    //Vertex start = graph.getVertexByName("Newark Liberty International Airport");
+    //Vertex end = graph.getVertexById("3494");
+    Vertex end = graph.getVertexByName("Chicago O\'Hare International Airport");
     BFS bfs(graph, start, end, 3);
     bfs.findPath();
 
