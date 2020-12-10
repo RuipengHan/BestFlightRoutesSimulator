@@ -3,3 +3,4 @@
 3,"Shanghai Pudong International Airport","Shanghai","China","PVG","ZSPD",31.143400192260742,121.80500030517578,13,8,"U","Asia/Shanghai","airport","OurAirports"
 4,"Boca Raton Airport","Boca Raton","United States","BCT","KBCT",26.3784999847,-80.1076965332,13,-5,"A","America/New_York","airport","OurAirports"
 5,"Madison Municipal Airport","Madison","United States",\N,"K52A",33.6120986938,-83.46040344240001,694,-5,"A","America/New_York","airport","OurAirports"
+6,"Chicago O'Hare International Airport","Chicago","United States","ORD","KORD",41.9786,-87.9048,672,-6,"A","America/Chicago","airport","OurAirports"
