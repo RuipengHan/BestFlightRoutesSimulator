@@ -8,6 +8,7 @@
 #include "graph.h"
 #include "Vertex.h"
 #include "edge.h"
+#include "GraphInitializer.h"
 
 #include "BFS.h"        /* bfs traversal */
 #include <stdlib.h>     /* srand, rand */
@@ -15,47 +16,6 @@
 using namespace std;
 Edge::AirlineMap Edge::id_airline_info_map_ = {};
 
-
-/**
- * Dijkstra algorithm implementation
- * @param graph 
- * @param s The starting vertex
- * @return a map with every vertex as key and its corresponding previous vertex as value
- */
-map<Vertex, Vertex> Dijkstra(Graph& graph, Vertex& s) {
-    map<Vertex, Vertex> p;
-    map<Vertex, int> d;
-    for (Vertex& v : graph.getVertices()) {
-        d.insert({v, INT_MAX});
-    }
-    d[s] = 0;
-
-    priority_queue<pair<Vertex, int>, vector<pair<Vertex, int>>, greater<pair<Vertex, int>>> Q;
-    Q.push({s, 0});
-    Graph T(true, true);
-
-    while(!Q.empty()) {
-        Vertex u = Q.top().first;
-        Q.pop();
-        T.insertVertex(u);
-        vector<Vertex> neighbors = graph.getAdjacent(u);
-        for (Vertex v : neighbors) {
-            vector<Vertex> T_neighbors = T.getAdjacent(u);
-            if (find(T_neighbors.begin(), T_neighbors.end(), v) == T_neighbors.end()) {
-                if (graph.getEdgeWeight(u, v) + d[u] < d[v]) {
-                    d[v] = graph.getEdgeWeight(u, v) + d[u];
-                    p.insert({v, u});
-                    T.insertEdge(u, v);
-                    Q.push({v, d[v]});
-                }
-            }
-        }
-    }
-
-    return p;
-}
-
-#include "GraphInitializer.h"
 int main() {
     std::cout<< "Hello World." << std::endl;
     string airport_file = "data_set/airports.dat.txt";
