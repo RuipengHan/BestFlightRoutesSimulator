@@ -99,28 +99,15 @@ TEST_CASE("Landmark 2", "step 0") {
 
 
 TEST_CASE("Landmark 3", "step 0") {
-    cout << GREEN << "11111111111 :" << RESET << endl;
     graphInitializer_landmark.GraphInit();
     Vertex start = graph_landmark_test.getVertexById("1");
     Vertex landmark = graph_landmark_test.getVertexById("5");
     Vertex end = graph_landmark_test.getVertexById("7");
     graph_landmark_test.removeEdge(landmark, end);
-    //cout << "11111111111 :" << endl;
     AlgoImpl Di(graph_landmark_test, start);
     vector<Vertex> paths = Di.landmark(graph_landmark_test, start, end, landmark);
-    //cout << "22222222222 :" << endl;
-    //vector<Vertex> paths = GetPathsFromPreviousMap(p, start, end);
     Vertex ohare = graph_landmark_test.getVertexById("6");
     Vertex pudong = graph_landmark_test.getVertexById("3");
-    cout << "Start :" << paths[0].airport_id_ << ", " << paths[1].airport_id_ << ", " << paths[2].airport_id_ << ", " << paths[3].airport_id_ << endl;
-    cout << "route 1 5 6 7 :" << graph_landmark_test.getEdgeWeight(start, landmark) + graph_landmark_test.getEdgeWeight(landmark, ohare) + graph_landmark_test.getEdgeWeight(ohare, end) << endl;
-    cout << "route 1 5 3 7 :" <<  graph_landmark_test.getEdgeWeight(start, landmark) + graph_landmark_test.getEdgeWeight(landmark, pudong) + graph_landmark_test.getEdgeWeight(pudong, end) << endl;
-    cout << "route 1 5:" << graph_landmark_test.getEdgeWeight(start, landmark) << endl;
-    cout << "5 to 3 :" <<  graph_landmark_test.getEdgeWeight(landmark, pudong) << endl;
-    cout << "3 to 7 :" <<  graph_landmark_test.getEdgeWeight(pudong, end) << endl;
-    cout << "route 1 5:" << graph_landmark_test.getEdgeWeight(start, landmark) << endl;
-    cout << "5 to 6 :" <<  graph_landmark_test.getEdgeWeight(landmark, ohare) << endl;
-    cout << "6 to 7 :" <<  graph_landmark_test.getEdgeWeight(ohare, end) << endl;
 
     REQUIRE((paths[0] == start && paths[1] == landmark && paths[2] == ohare && paths[3] == end) == true);
 
