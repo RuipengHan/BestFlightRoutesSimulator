@@ -9,7 +9,7 @@
 #include "Vertex.h"
 #include "edge.h"
 #include "GraphInitializer.h"
-
+#include "UserInterface.h"
 #include "BFS.h"        /* bfs traversal */
 #include <stdlib.h>     /* srand, rand */
 
@@ -25,18 +25,19 @@ int main() {
 
     GraphInitializer graphInitializer(graph, airport_file, airline_file, route_file);
     graphInitializer.GraphInit();
-
-    vector<Vertex> all_airports = graph.getVertices();
-    //Vertex start = all_airports[rand() % all_airports.size()];
-    //Vertex start = all_airports[3247];
-    //Vertex start = graph.getVertexById("3682");
-    Vertex start = graph.getVertexByName("Taoxian Airport");
-    //Vertex end = all_airports[rand() % all_airports.size()];
-    //Vertex end = all_airports[3251];
-    //Vertex end = graph.getVertexById("3494");
-    Vertex end = graph.getVertexByName("Chicago O\'Hare International Airport");
-    BFS bfs(graph, start, end, 3);
-    bfs.findPath();
+    UserInterface interface(graph);
+    interface.Communicate();
+//    vector<Vertex> all_airports = graph.getVertices();
+//    //Vertex start = all_airports[rand() % all_airports.size()];
+//    //Vertex start = all_airports[3247];
+//    //Vertex start = graph.getVertexById("3682");
+//    Vertex start = graph.getVertexByName("Taoxian Airport");
+//    //Vertex end = all_airports[rand() % all_airports.size()];
+//    //Vertex end = all_airports[3251];
+//    //Vertex end = graph.getVertexById("3494");
+//    Vertex end = graph.getVertexByName("Chicago O\'Hare International Airport");
+//    BFS bfs(graph, start, end, 3);
+//    bfs.findPath();
 
     std::cout << "Hello World." << std::endl;
 
