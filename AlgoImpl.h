@@ -40,6 +40,11 @@ public:
      */
     vector<Vertex> getShortestPath(Graph& graph, Vertex& start, Vertex& end);
 
+    /**
+     * Prints the path.
+     * @param paths
+     */
+    void print(vector<Vertex>& paths);
 private:
 
 };

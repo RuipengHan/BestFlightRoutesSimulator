@@ -3,6 +3,8 @@
 //
 
 #include "UserInterface.h"
+#define MAGENTA "\033[35m"      /* Magenta */
+#define RESET   "\033[0m"
 UserInterface::UserInterface(Graph& graph) : graph_(graph) {
     //graph_ = graph;
     end_ = false;
@@ -11,15 +13,15 @@ UserInterface::UserInterface(Graph& graph) : graph_(graph) {
 
 void UserInterface::Communicate() {
     int id1, id2, id3;
-    cout << "What type of search do you want to perform?" << endl;
-    cout << "Enter 0 to find all possible paths between two airport." << endl;
-    cout << "Enter 1 to find the shortest paths between two airport." << endl;
+    cout << MAGENTA << "What type of search do you want to perform?" << endl;
+    cout << MAGENTA << "Enter 0 to find all possible paths between two airport." << endl;
+    cout << MAGENTA << "Enter 1 to find the shortest paths between two airport." << endl;
     cin >> type_;
 
     while (!end_) {
-        cout << "Please enter the ID for the departure airport" << endl;
+        cout << MAGENTA << "Please enter the ID for the departure airport" << endl;
         cin >> id1;
-        cout << "Please enter the ID for the destination airport" << endl;
+        cout << MAGENTA << "Please enter the ID for the destination airport" << RESET << endl;
         cin >> id2;
         if (type_ == BFS_) {
             RunBFS(id1, id2);
@@ -67,4 +69,5 @@ void UserInterface::RunDijkstra(int id_1, int id_2) {
     AlgoImpl Di(graph_, start);
     map<Vertex, Vertex> p = Di.Dijkstra(graph_, start);
     vector<Vertex> paths = GetPathsFromPreviousMap(p, start, end);
+    Di.print(paths);
 }
