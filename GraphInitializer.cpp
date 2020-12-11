@@ -25,9 +25,8 @@ bool GraphInitializer::GraphInit() {
         std::cout<< "Oops cannot read route file." << std::endl;
 
     initializeEdge();
-    std::cout<< "NUMBER Airlines: " << Edge::id_airline_info_map_.size() << std::endl;
-    std::cout<< "NUMBER OF AIRPORT called using getVertices.size(): " << graph_.getVertices().size() << std::endl;
-    std::cout<< "SIZE OF THE MAP: " << airport_dict_.size() << std::endl;
+    std::cout<< "Number of Airlines: " << Edge::id_airline_info_map_.size() << std::endl;
+    std::cout<< "NUMBER OF airports:: " << graph_.getVertices().size() << std::endl;
     std::cout<< "NUMBER OF EDGES IN THE GRAPH: " << graph_.getEdges().size() << std::endl;
     return init_success_;
 }
@@ -68,7 +67,7 @@ bool GraphInitializer::addAirportVertices() {
                 airport_dict_.insert({new_vertex.airport_id_, new_vertex});
             count++;
         }
-        std::cout<< "AFTER READ, WE HAVE NUM OF AIRPORTS: " << count << std::endl;
+        //std::cout<< "AFTER READ, WE HAVE NUM OF AIRPORTS: " << count << std::endl;
         return true;
     }
 
@@ -130,7 +129,7 @@ bool GraphInitializer::connectVertices() {
                 all_airlines_in_edge_map_.insert({edge_key, value}); // insert it if no previous record found.
             }
         }
-        cout<< "Number of edges in the all_airlines_in_edge_map is: " << all_airlines_in_edge_map_.size() << endl;
+        //cout<< "Number of edges in the all_airlines_in_edge_map is: " << all_airlines_in_edge_map_.size() << endl;
         return true;
     }
     return false;
