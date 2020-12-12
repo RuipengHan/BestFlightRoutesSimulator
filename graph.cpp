@@ -480,3 +480,21 @@ void Graph::savePNG(string title) const
     string rmCommand = "rm -f " + filename + " 2> /dev/null";
     system(rmCommand.c_str());
 }
+
+void Graph::PrintDictionary() const {
+    if (getVertices().size() == 0) {
+        std::cout << "There are no airports. Returned back to program." << std::endl;
+        return;
+    }
+    std::ofstream myfile ("Aiprot ID Reference.txt");
+    vector<Vertex> vertices = getVertices();
+
+    if (myfile.is_open()) {
+        for (const Vertex& vertex : vertices) {
+            myfile << "Airport ID " << vertex.airport_id_ << ": " << vertex.name_<< "\n";
+        }
+        myfile.close();
+    }
+
+    std::cout << "Write to Airport ID Reference.txt. Please open it for reference." << std::endl;
+}

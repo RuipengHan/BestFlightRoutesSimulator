@@ -13,27 +13,44 @@ UserInterface::UserInterface(Graph& graph) : graph_(graph) {
 
 void UserInterface::Communicate() {
     int id1, id2, id3;
+    cout << MAGENTA << "You can enter '-1' anytime to get a reference of each airport id to its English name." << endl;
     cout << MAGENTA << "What type of search do you want to perform?" << endl;
-    cout << MAGENTA << "Enter 0 to find all possible paths between two airport." << endl;
-    cout << MAGENTA << "Enter 1 to find the shortest paths between two airport." << endl;
-    cin >> type_;
 
     while (!end_) {
+        cout << MAGENTA << "Enter 0 to find all possible paths between two airport." << endl;
+        cout << MAGENTA << "Enter 1 to find the shortest paths between two airport." << RESET <<endl;
+        cin >> type_;
+
+        if (type_ == -1) {
+            graph_.PrintDictionary();
+            continue;
+        }
+
         cout << MAGENTA << "Please enter the ID for the departure airport" << endl;
         cin >> id1;
+        if (id1 == -1) {
+            graph_.PrintDictionary();
+            continue;
+        }
+
         cout << MAGENTA << "Please enter the ID for the destination airport" << RESET << endl;
         cin >> id2;
+        if (id2 == -1) {
+            graph_.PrintDictionary();
+            continue;
+        }
+
         if (type_ == BFS_) {
             RunBFS(id1, id2);
         } else if (type_ == DIJKSTRA) {
-//            cout << "Please enter the ID for the destination airport" << endl;
-//            cin >> id3;
             RunDijkstra(id1, id2);
         } else {
             cout << "The operation code you entered is invalid. Ending the program." << endl;
             end_ = true;
         }
-        end_ = true;
+        cout << MAGENTA << "Do you wish you do another operation? Enter 1 as yes or 0 as no." << RESET << endl;
+        cin >> end_;
+        end_ = !end_;
     }
 }
 

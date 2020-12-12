@@ -21,6 +21,7 @@ private:
     Graph& graph_;
     bool end_;
     short type_;
+    bool help_; /* The help keyword used when the user polls up airport information.*/
     enum { BFS_ = 0, DIJKSTRA = 1, LANDMARK = 2};
 };
 #endif //FINAL_PROJECT_USERINTERFACE_H

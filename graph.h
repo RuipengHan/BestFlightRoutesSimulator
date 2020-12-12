@@ -18,6 +18,7 @@
 #include <sstream>
 #include <vector>
 #include <map>
+#include <fstream>
 
 #include "edge.h"
 #include "Vertex.h"
@@ -256,6 +257,12 @@ public:
 
     void clear();
 
+    /**
+     * Print all the airport id with respect to their name.
+     * @param source - vertex to get neighbors from
+     * @return a vector of vertices
+     */
+    void PrintDictionary() const;
 
     const static Vertex InvalidVertex;
     const static Edge InvalidEdge;
