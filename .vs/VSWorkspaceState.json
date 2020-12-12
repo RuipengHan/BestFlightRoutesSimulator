@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\data_set",
+    "\\tests"
   ],
-  "SelectedNode": "\\Development.md",
+  "SelectedNode": "\\traversal.cpp",
   "PreviewInSolutionExplorer": false
 }
