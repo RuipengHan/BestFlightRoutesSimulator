@@ -25,9 +25,8 @@ bool GraphInitializer::GraphInit() {
         std::cout<< "Oops cannot read route file." << std::endl;
 
     initializeEdge();
-    std::cout<< "NUMBER Airlines: " << Edge::id_airline_info_map_.size() << std::endl;
-    std::cout<< "NUMBER OF AIRPORT called using getVertices.size(): " << graph_.getVertices().size() << std::endl;
-    std::cout<< "SIZE OF THE MAP: " << airport_dict_.size() << std::endl;
+    std::cout<< "Number of Airlines: " << Edge::id_airline_info_map_.size() << std::endl;
+    std::cout<< "NUMBER OF airports:: " << graph_.getVertices().size() << std::endl;
     std::cout<< "NUMBER OF EDGES IN THE GRAPH: " << graph_.getEdges().size() << std::endl;
     return init_success_;
 }
@@ -68,11 +67,29 @@ bool GraphInitializer::addAirportVertices() {
                 airport_dict_.insert({new_vertex.airport_id_, new_vertex});
             count++;
         }
-        std::cout<< "AFTER READ, WE HAVE NUM OF AIRPORTS: " << count << std::endl;
+        //std::cout<< "AFTER READ, WE HAVE NUM OF AIRPORTS: " << count << std::endl;
         return true;
     }
 
     return false;
+}
+
+double GraphInitializer::calculateDist(double lat1, double lon1, double lat2, double lon2) {
+    // distance between latitudes and longitudes 
+    double dLat = (lat2 - lat1) * M_PI / 180.0; 
+    double dLon = (lon2 - lon1) * M_PI / 180.0; 
+    // convert to radians 
+    lat1 = (lat1) * M_PI / 180.0; 
+    lat2 = (lat2) * M_PI / 180.0; 
+    // apply formulae 
+    double a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(lat1) * cos(lat2); 
+    double rad = 6371; 
+    double c = 2 * asin(sqrt(a)); 
+    return rad * c; 
+}
+
+double GraphInitializer::calculateDistTest(double lat1, double lon1, double lat2, double lon2) {
+    return calculateDist(lat1, lon1, lat2, lon2);
 }
 
 bool GraphInitializer::connectVertices() {
@@ -95,6 +112,10 @@ bool GraphInitializer::connectVertices() {
             // If the graph doesn't contain the edge yet, insert.
             if (!graph_.edgeExists(start, end) && start.airport_id_ != "" && end.airport_id_ != "") {
                 graph_.insertEdge(start, end);
+
+                // Set edge's weight using distance between two vertices
+                double dist = calculateDist(start.latitude_, start.longitude_, end.latitude_, end.longitude_);
+                graph_.setEdgeWeight(start, end, (int)dist);
             }
             pair<string, string> edge_key{start.airport_id_, end.airport_id_};
             if (all_airlines_in_edge_map_.find(edge_key) != all_airlines_in_edge_map_.end() && start.airport_id_ != "" && end.airport_id_ != "") {
@@ -108,7 +129,7 @@ bool GraphInitializer::connectVertices() {
                 all_airlines_in_edge_map_.insert({edge_key, value}); // insert it if no previous record found.
             }
         }
-        cout<< "Number of edges in the all_airlines_in_edge_map is: " << all_airlines_in_edge_map_.size() << endl;
+        //cout<< "Number of edges in the all_airlines_in_edge_map is: " << all_airlines_in_edge_map_.size() << endl;
         return true;
     }
     return false;

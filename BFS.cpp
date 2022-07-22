@@ -68,7 +68,7 @@ std::vector<std::vector<Vertex>> BFS::findPath() {
         }
     }
     if (toReturn.empty()) {
-        std::cout << "no possible routes from " << start_.name_ << " to " << end_.name_ << " within " << num_ << " airport limit" << std::endl;
+        std::cout <<RED<< "no possible routes from " << start_.name_ << " to " << end_.name_ << " within " << num_ << " airport limit" << RESET <<std::endl;
     }
 
 	return toReturn;

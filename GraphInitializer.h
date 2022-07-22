@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <cmath> 
+#include <queue>
 #include "graph.h"
 #include "Vertex.h"
 #include "edge.h"
@@ -29,6 +31,16 @@ public:
      * @return Return false if any of the three files failed to open;
      */
     bool GraphInit();
+
+    /**
+     * Test for Calculate distance between two airports.
+     * @param lat1 First latitude
+     * @param lon1 First longitude
+     * @param lat2 Second latitude
+     * @param lon2 Second longitude
+     * @return double -- Actual distance between two airports
+     */
+    double calculateDistTest(double lat1, double lon1, double lat2, double lon2);
 
     // Getters
     Graph& GetGraph();
@@ -87,6 +99,16 @@ public:
      * that is, make sure each edge in the graph has all airelines in it.
      */
     void initializeEdge();
+
+    /**
+     * Calculate distance between two airports.
+     * @param lat1 First latitude 
+     * @param lon1 First longitude
+     * @param lat2 Second latitude 
+     * @param lon2 Second longitude
+     * @return double -- Actual distance between two airports
+     */
+    double calculateDist(double lat1, double lon1, double lat2, double lon2);
 
 };
 #endif //FINAL_PROJECT_GRAPHINITIALIZER_H
